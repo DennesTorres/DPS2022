@@ -1,0 +1,22 @@
+{
+	"name": "sqlSource",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=dps2022sql.database.windows.net;Initial Catalog=advwrksLTdev;User ID=dennes",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "dpsSecrets",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "devpassword"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
