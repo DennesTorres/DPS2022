@@ -1,0 +1,20 @@
+{
+	"name": "productCategoryParquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkedStorage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "productcategory",
+				"fileSystem": "bronze"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
