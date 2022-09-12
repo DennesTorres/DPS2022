@@ -1,0 +1,126 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "dfDPS2022"
+		},
+		"sqlSource_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'sqlSource'"
+		},
+		"dpsSecrets_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://dps2022secrets.vault.azure.net/"
+		},
+		"linkedStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "@{linkedService().storagelink}"
+		},
+		"privSQLSource_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/4d72480d-0adb-4df7-b5e3-866c027fe3e0/resourceGroups/DPS2022/providers/Microsoft.Sql/servers/dps2022sql"
+		},
+		"privSQLSource_properties_groupId": {
+			"type": "string",
+			"defaultValue": "sqlServer"
+		},
+		"privStorage_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/4d72480d-0adb-4df7-b5e3-866c027fe3e0/resourceGroups/DPS2022/providers/Microsoft.Storage/storageAccounts/dps2022stagingdev"
+		},
+		"privStorage_properties_groupId": {
+			"type": "string",
+			"defaultValue": "dfs"
+		},
+		"default_properties_servername_value": {
+			"type": "string",
+			"defaultValue": "dps2022sql.database.windows.net"
+		},
+		"default_properties_databasename_value": {
+			"type": "string",
+			"defaultValue": "advwrksLTprod"
+		},
+		"default_properties_username_value": {
+			"type": "string",
+			"defaultValue": "Dennes"
+		},
+		"default_properties_passwordkey_value": {
+			"type": "string",
+			"defaultValue": "prodpassword"
+		},
+		"default_properties_storagelink_value": {
+			"type": "string",
+			"defaultValue": "https://dps2022staging.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "dfDPS2022_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"sqlSource_connectionString": {
+						"value": "[parameters('sqlSource_connectionString')]"
+					},
+					"default_properties_servername_value": {
+						"value": "[parameters('default_properties_servername_value')]"
+					},
+					"default_properties_databasename_value": {
+						"value": "[parameters('default_properties_databasename_value')]"
+					},
+					"default_properties_username_value": {
+						"value": "[parameters('default_properties_username_value')]"
+					},
+					"default_properties_passwordkey_value": {
+						"value": "[parameters('default_properties_passwordkey_value')]"
+					},
+					"default_properties_storagelink_value": {
+						"value": "[parameters('default_properties_storagelink_value')]"
+					},
+					"dpsSecrets_properties_typeProperties_baseUrl": {
+						"value": "[parameters('dpsSecrets_properties_typeProperties_baseUrl')]"
+					},
+					"privSQLSource_properties_privateLinkResourceId": {
+						"value": "[parameters('privSQLSource_properties_privateLinkResourceId')]"
+					},
+					"privSQLSource_properties_groupId": {
+						"value": "[parameters('privSQLSource_properties_groupId')]"
+					},
+					"privStorage_properties_privateLinkResourceId": {
+						"value": "[parameters('privStorage_properties_privateLinkResourceId')]"
+					},
+					"privStorage_properties_groupId": {
+						"value": "[parameters('privStorage_properties_groupId')]"
+					},
+					"linkedStorage_properties_typeProperties_url": {
+						"value": "[parameters('linkedStorage_properties_typeProperties_url')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

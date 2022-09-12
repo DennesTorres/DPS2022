@@ -1,0 +1,22 @@
+{
+	"servername": {
+		"type": "string",
+		"value": "dps2022sql.database.windows.net"
+	},
+	"databasename": {
+		"type": "string",
+		"value": "advwrksLTprod"
+	},
+	"username": {
+		"type": "string",
+		"value": "Dennes"
+	},
+	"passwordkey": {
+		"type": "string",
+		"value": "prodpassword"
+	},
+	"storagelink": {
+		"type": "string",
+		"value": "https://dps2022staging.dfs.core.windows.net/"
+	}
+}

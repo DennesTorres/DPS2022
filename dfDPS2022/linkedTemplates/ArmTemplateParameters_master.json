@@ -1,0 +1,51 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "dfDPS2022"
+		},
+		"sqlSource_connectionString": {
+			"value": ""
+		},
+		"dpsSecrets_properties_typeProperties_baseUrl": {
+			"value": "https://dps2022secrets.vault.azure.net/"
+		},
+		"linkedStorage_properties_typeProperties_url": {
+			"value": "@{linkedService().storagelink}"
+		},
+		"privSQLSource_properties_privateLinkResourceId": {
+			"value": "/subscriptions/4d72480d-0adb-4df7-b5e3-866c027fe3e0/resourceGroups/DPS2022/providers/Microsoft.Sql/servers/dps2022sql"
+		},
+		"privSQLSource_properties_groupId": {
+			"value": "sqlServer"
+		},
+		"privStorage_properties_privateLinkResourceId": {
+			"value": "/subscriptions/4d72480d-0adb-4df7-b5e3-866c027fe3e0/resourceGroups/DPS2022/providers/Microsoft.Storage/storageAccounts/dps2022stagingdev"
+		},
+		"privStorage_properties_groupId": {
+			"value": "dfs"
+		},
+		"default_properties_servername_value": {
+			"value": "dps2022sql.database.windows.net"
+		},
+		"default_properties_databasename_value": {
+			"value": "advwrksLTprod"
+		},
+		"default_properties_username_value": {
+			"value": "Dennes"
+		},
+		"default_properties_passwordkey_value": {
+			"value": "prodpassword"
+		},
+		"default_properties_storagelink_value": {
+			"value": "https://dps2022staging.dfs.core.windows.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
