@@ -16,7 +16,7 @@
 			},
 			"passwordkey": {
 				"type": "string",
-				"value": "uatpassword"
+				"value": "prodpassword"
 			},
 			"storagelink": {
 				"type": "string",
