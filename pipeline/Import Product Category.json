@@ -104,7 +104,13 @@
 				"outputs": [
 					{
 						"referenceName": "productCategoryParquet",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"storagelink": {
+								"value": "@pipeline().globalParameters.storagelink",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
