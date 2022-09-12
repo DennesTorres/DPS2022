@@ -3,7 +3,18 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "linkedStorage",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"storagelink": {
+					"value": "@dataset().storagelink",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"storagelink": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "Parquet",

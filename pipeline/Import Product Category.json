@@ -80,13 +80,37 @@
 				"inputs": [
 					{
 						"referenceName": "dsProductCategory",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"servername": {
+								"value": "@pipeline().globalParameters.databasename",
+								"type": "Expression"
+							},
+							"databasename": {
+								"value": "@pipeline().globalParameters.databasename",
+								"type": "Expression"
+							},
+							"username": {
+								"value": "@pipeline().globalParameters.username",
+								"type": "Expression"
+							},
+							"secretname": {
+								"value": "@pipeline().globalParameters.passwordkey",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "productCategoryParquet",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"storagelink": {
+								"value": "@pipeline().globalParameters.storagelink",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
