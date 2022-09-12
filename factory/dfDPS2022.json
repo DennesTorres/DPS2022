@@ -1,0 +1,28 @@
+{
+	"name": "dfDPS2022",
+	"properties": {
+		"globalParameters": {
+			"servername": {
+				"type": "string",
+				"value": "dps2022sql.database.windows.net"
+			},
+			"databasename": {
+				"type": "string",
+				"value": "advwrksLTuat"
+			},
+			"username": {
+				"type": "string",
+				"value": "Dennes"
+			},
+			"passwordkey": {
+				"type": "string",
+				"value": "uatpassword"
+			},
+			"storagelink": {
+				"type": "string",
+				"value": "https://dps2022staginguat.dfs.core.windows.net/"
+			}
+		}
+	},
+	"location": "northeurope"
+}
