@@ -9,6 +9,11 @@
 		"connectVia": {
 			"referenceName": "AutoResolveIntegrationRuntime",
 			"type": "IntegrationRuntimeReference"
+		},
+		"parameters": {
+			"storagelink": {
+				"type": "string"
+			}
 		}
 	}
 }
