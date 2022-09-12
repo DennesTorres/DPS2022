@@ -83,7 +83,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"servername": {
-								"value": "@pipeline().globalParameters.databasename",
+								"value": "@pipeline().globalParameters.servername",
 								"type": "Expression"
 							},
 							"databasename": {
