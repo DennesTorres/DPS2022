@@ -8,7 +8,7 @@
 			},
 			"databasename": {
 				"type": "string",
-				"value": "advwrksLTuat"
+				"value": "advwrksLTprod"
 			},
 			"username": {
 				"type": "string",
