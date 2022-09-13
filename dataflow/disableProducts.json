@@ -14,9 +14,9 @@
 			],
 			"sinks": [
 				{
-					"linkedService": {
-						"referenceName": "sqlSource",
-						"type": "LinkedServiceReference"
+					"dataset": {
+						"referenceName": "dimProductDS",
+						"type": "DatasetReference"
 					},
 					"name": "UpdatingRecords"
 				}
@@ -45,19 +45,31 @@
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> Products",
 				"Products derive(EndDate = currentTimestamp()) ~> DefineEndDate",
 				"DefineEndDate alterRow(updateIf(not(isNull(EndDate)))) ~> DefineUpdate",
-				"DefineUpdate sink(allowSchemaDrift: true,",
+				"DefineUpdate sink(allowSchemaDrift: false,",
 				"     validateSchema: false,",
+				"     input(",
+				"          ProductKey as integer,",
+				"          ProductID as integer,",
+				"          Name as string,",
+				"          ListPrice as decimal(19,4),",
+				"          ProductModelID as integer,",
+				"          ModelName as string,",
+				"          EndDate as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:false,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['ProductId'],",
+				"     skipKeyWrites:true,",
 				"     format: 'table',",
-				"     store: 'sqlserver',",
-				"     schemaName: '',",
-				"     tableName: '',",
-				"     insertable: true,",
-				"     updateable: false,",
-				"     deletable: false,",
-				"     upsertable: false,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> UpdatingRecords"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ProductID = ProductId,",
+				"          EndDate",
+				"     )) ~> UpdatingRecords"
 			]
 		}
 	}
