@@ -214,6 +214,32 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Core Product Dimension",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "If exists last version",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Core Product Dimension",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"SQL": {
+							"value": "@variables('SQL')",
+							"type": "Expression"
+						}
+					}
+				}
 			}
 		],
 		"variables": {
