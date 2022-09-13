@@ -267,6 +267,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"expression": {
+						"value": "@equals(coalesce(variables('startDate'),''),'')",
+						"type": "Expression"
+					},
 					"ifFalseActivities": [
 						{
 							"name": "Complete Date Dimension",
