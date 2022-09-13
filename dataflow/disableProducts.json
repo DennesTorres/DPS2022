@@ -30,6 +30,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     SQL as string",
+				"}",
 				"source(output(",
 				"          ProductId as integer,",
 				"          ProductName as string,",
@@ -41,7 +44,7 @@
 				"     validateSchema: false,",
 				"     format: 'query',",
 				"     store: 'sqlserver',",
-				"     query: 'select ProductId,bp.Name ProductName,ListPrice,pm.ProductModelID,pm.Name as ModelName\\nfrom dbo.bigProduct bp\\ninner join SalesLT.ProductModel pm\\non bp.ProductModelID=pm.ProductModelId',",
+				"     query: ($SQL),",
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> Products",
 				"Products derive(EndDate = currentTimestamp()) ~> DefineEndDate",
 				"DefineEndDate alterRow(updateIf(not(isNull(EndDate)))) ~> DefineUpdate",
