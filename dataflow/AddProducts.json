@@ -27,6 +27,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     SQL as string",
+				"}",
 				"source(output(",
 				"          ProductId as integer,",
 				"          ProductName as string,",
