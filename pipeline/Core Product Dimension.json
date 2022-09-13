@@ -18,6 +18,12 @@
 					"dataflow": {
 						"referenceName": "disableProducts",
 						"type": "DataFlowReference",
+						"parameters": {
+							"SQL": {
+								"value": "'@{pipeline().parameters.SQL}'",
+								"type": "Expression"
+							}
+						},
 						"datasetParameters": {
 							"UpdatingRecords": {
 								"servername": {
@@ -47,26 +53,6 @@
 									},
 									"databasename": {
 										"value": "@pipeline().globalParameters.databasename",
-										"type": "Expression"
-									},
-									"username": {
-										"value": "@pipeline().globalParameters.username",
-										"type": "Expression"
-									},
-									"secretname": {
-										"value": "@pipeline().globalParameters.passwordkey",
-										"type": "Expression"
-									}
-								}
-							},
-							"UpdatingRecords": {
-								"schemaLinkedService": {
-									"servername": {
-										"value": "@pipeline().globalParameters.servername",
-										"type": "Expression"
-									},
-									"databasename": {
-										"value": "@pipeline().globalParameters.dwdatabase",
 										"type": "Expression"
 									},
 									"username": {
@@ -111,6 +97,12 @@
 					"dataflow": {
 						"referenceName": "AddProducts",
 						"type": "DataFlowReference",
+						"parameters": {
+							"SQL": {
+								"value": "'@{pipeline().parameters.SQL}'",
+								"type": "Expression"
+							}
+						},
 						"datasetParameters": {
 							"InsertProducts": {
 								"servername": {
@@ -162,6 +154,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"SQL": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "ProductDimension"
 		},
