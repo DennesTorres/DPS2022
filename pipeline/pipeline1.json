@@ -45,9 +45,46 @@
 								"secureInput": false
 							},
 							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[FillDateDim]",
+								"storedProcedureParameters": {
+									"EndDate": {
+										"value": {
+											"value": "@variables('ExecEndDate')",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"StartDate": {
+										"value": {
+											"value": "@pipeline().parameters.FinalStartDate",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									}
+								}
+							},
 							"linkedServiceName": {
 								"referenceName": "sqlSource",
-								"type": "LinkedServiceReference"
+								"type": "LinkedServiceReference",
+								"parameters": {
+									"servername": {
+										"value": "@pipeline().globalParameters.servername",
+										"type": "Expression"
+									},
+									"databasename": {
+										"value": "@pipeline().globalParameters.dwdatabase",
+										"type": "Expression"
+									},
+									"username": {
+										"value": "@pipeline().globalParameters.username",
+										"type": "Expression"
+									},
+									"secretname": {
+										"value": "@pipeline().globalParameters.passwordkey",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]
