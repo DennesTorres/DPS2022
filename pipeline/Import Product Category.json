@@ -5,7 +5,14 @@
 			{
 				"name": "Copy Product Category",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Delete old files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -113,6 +120,23 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "Delete old files",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "DeleteFiles",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"SourceStore_Location": "bronze",
+						"SourceStore_Directory": "productcategory"
+					}
+				}
 			}
 		],
 		"annotations": []
