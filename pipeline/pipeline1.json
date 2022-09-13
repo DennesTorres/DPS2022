@@ -20,7 +20,10 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "ExecEndDate",
-								"value": "@adddays(pipeline().parameters.StartDate,-1)"
+								"value": {
+									"value": "@adddays(pipeline().parameters.StartDate,-1)",
+									"type": "Expression"
+								}
 							}
 						},
 						{
@@ -59,7 +62,19 @@
 					"expression": {
 						"value": "@not(equals(pipeline().parameters.FinalEndDate,pipeline().parameters.EndDate))",
 						"type": "Expression"
-					}
+					},
+					"ifTrueActivities": [
+						{
+							"name": "Set Exec Start Date",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "ExecStartDate",
+								"value": "@adddays(pipeline().parameters.EndDate,1)"
+							}
+						}
+					]
 				}
 			}
 		],
