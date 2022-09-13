@@ -1,0 +1,64 @@
+{
+	"name": "disableProducts",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "sqlSource",
+						"type": "LinkedServiceReference"
+					},
+					"name": "Products"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "sqlSource",
+						"type": "LinkedServiceReference"
+					},
+					"name": "UpdatingRecords"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DefineEndDate"
+				},
+				{
+					"name": "DefineUpdate"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ProductId as integer,",
+				"          ProductName as string,",
+				"          ListPrice as decimal(19,4),",
+				"          ProductModelID as integer,",
+				"          ModelName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'query',",
+				"     store: 'sqlserver',",
+				"     query: 'select ProductId,bp.Name ProductName,ListPrice,pm.ProductModelID,pm.Name as ModelName\\nfrom dbo.bigProduct bp\\ninner join SalesLT.ProductModel pm\\non bp.ProductModelID=pm.ProductModelId',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> Products",
+				"Products derive(EndDate = currentTimestamp()) ~> DefineEndDate",
+				"DefineEndDate alterRow(updateIf(not(isNull(EndDate)))) ~> DefineUpdate",
+				"DefineUpdate sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: '',",
+				"     tableName: '',",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     deletable: false,",
+				"     upsertable: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> UpdatingRecords"
+			]
+		}
+	}
+}
