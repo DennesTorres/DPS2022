@@ -1,0 +1,74 @@
+{
+	"name": "AddProducts",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"linkedService": {
+						"referenceName": "sqlSource",
+						"type": "LinkedServiceReference"
+					},
+					"name": "Products"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "dimProductDS",
+						"type": "DatasetReference"
+					},
+					"name": "InsertProducts"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DefineEndDate"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ProductId as integer,",
+				"          ProductName as string,",
+				"          ListPrice as decimal(19,4),",
+				"          ProductModelID as integer,",
+				"          ModelName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'query',",
+				"     store: 'sqlserver',",
+				"     query: 'select ProductId,bp.Name ProductName,ListPrice,pm.ProductModelID,pm.Name as ModelName\\nfrom dbo.bigProduct bp\\ninner join SalesLT.ProductModel pm\\non bp.ProductModelID=pm.ProductModelId',",
+				"     isolationLevel: 'READ_UNCOMMITTED') ~> Products",
+				"Products derive(EndDate = toDate(null())) ~> DefineEndDate",
+				"DefineEndDate sink(allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ProductKey as integer,",
+				"          ProductID as integer,",
+				"          Name as string,",
+				"          ListPrice as decimal(19,4),",
+				"          ProductModelID as integer,",
+				"          ModelName as string,",
+				"          EndDate as timestamp",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ProductID = ProductId,",
+				"          Name = ProductName,",
+				"          ListPrice,",
+				"          ProductModelID,",
+				"          ModelName,",
+				"          EndDate",
+				"     )) ~> InsertProducts"
+			]
+		}
+	}
+}
