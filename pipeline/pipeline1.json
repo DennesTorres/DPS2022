@@ -41,7 +41,11 @@
 								"secureOutput": false,
 								"secureInput": false
 							},
-							"userProperties": []
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "sqlSource",
+								"type": "LinkedServiceReference"
+							}
 						}
 					]
 				}
