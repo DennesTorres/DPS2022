@@ -1,0 +1,110 @@
+{
+	"name": "Core Product Dimension",
+	"properties": {
+		"activities": [
+			{
+				"name": "Disable Products",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "disableProducts",
+						"type": "DataFlowReference",
+						"linkedServiceParameters": {
+							"Products": {
+								"linkedService": {
+									"servername": {
+										"value": "@pipeline().globalParameters.servername",
+										"type": "Expression"
+									},
+									"databasename": {
+										"value": "@pipeline().globalParameters.databasename",
+										"type": "Expression"
+									},
+									"username": {
+										"value": "@pipeline().globalParameters.username",
+										"type": "Expression"
+									},
+									"secretname": {
+										"value": "@pipeline().globalParameters.passwordkey",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "Add Products",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Disable Products",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "AddProducts",
+						"type": "DataFlowReference",
+						"linkedServiceParameters": {
+							"Products": {
+								"linkedService": {
+									"servername": {
+										"value": "@pipeline().globalParameters.servername",
+										"type": "Expression"
+									},
+									"databasename": {
+										"value": "@pipeline().globalParameters.databasename",
+										"type": "Expression"
+									},
+									"username": {
+										"value": "@pipeline().globalParameters.username",
+										"type": "Expression"
+									},
+									"secretname": {
+										"value": "@pipeline().globalParameters.passwordkey",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "ProductDimension"
+		},
+		"annotations": []
+	}
+}
