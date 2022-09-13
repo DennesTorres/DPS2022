@@ -240,6 +240,59 @@
 						}
 					}
 				}
+			},
+			{
+				"name": "Update version control",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Core Product Dimension",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "sqlSource",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"servername": {
+							"value": "@pipeline().globalParameters.servername",
+							"type": "Expression"
+						},
+						"databasename": {
+							"value": "@pipeline().globalParameters.dwdatabase",
+							"type": "Expression"
+						},
+						"username": {
+							"value": "@pipeline().globalParameters.username",
+							"type": "Expression"
+						},
+						"secretname": {
+							"value": "@pipeline().globalParameters.passwordkey",
+							"type": "Expression"
+						}
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "@variables('VersionControlSQL')",
+								"type": "Expression"
+							}
+						}
+					]
+				}
 			}
 		],
 		"variables": {
