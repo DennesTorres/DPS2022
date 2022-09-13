@@ -1,6 +1,9 @@
 {
 	"name": "Build Date Dimension",
 	"properties": {
+		"folder": {
+			"name": "DateDimension"
+		},
 		"annotations": []
 	}
 }
