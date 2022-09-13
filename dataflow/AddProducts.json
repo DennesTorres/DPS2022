@@ -41,7 +41,7 @@
 				"     validateSchema: false,",
 				"     format: 'query',",
 				"     store: 'sqlserver',",
-				"     query: 'select ProductId,bp.Name ProductName,ListPrice,pm.ProductModelID,pm.Name as ModelName\\nfrom dbo.bigProduct bp\\ninner join SalesLT.ProductModel pm\\non bp.ProductModelID=pm.ProductModelId',",
+				"     query: ($SQL),",
 				"     isolationLevel: 'READ_UNCOMMITTED') ~> Products",
 				"Products derive(EndDate = toDate(null())) ~> DefineEndDate",
 				"DefineEndDate sink(allowSchemaDrift: false,",
