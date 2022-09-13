@@ -71,6 +71,26 @@
 					"dataflow": {
 						"referenceName": "AddProducts",
 						"type": "DataFlowReference",
+						"datasetParameters": {
+							"InsertProducts": {
+								"servername": {
+									"value": "@pipeline().globalParameters.servername",
+									"type": "Expression"
+								},
+								"databasename": {
+									"value": "@pipeline().globalParameters.dwdatabase",
+									"type": "Expression"
+								},
+								"username": {
+									"value": "@pipeline().globalParameters.username",
+									"type": "Expression"
+								},
+								"secretname": {
+									"value": "@pipeline().globalParameters.passwordkey",
+									"type": "Expression"
+								}
+							}
+						},
 						"linkedServiceParameters": {
 							"Products": {
 								"linkedService": {
