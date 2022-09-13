@@ -30,8 +30,35 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "sqlSource",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"servername": {
+							"value": "@pipeline().globalParameters.servername",
+							"type": "Expression"
+						},
+						"databasename": {
+							"value": "@pipeline().globalParameters.dwdatabase",
+							"type": "Expression"
+						},
+						"username": {
+							"value": "@pipeline().globalParameters.username",
+							"type": "Expression"
+						},
+						"secretname": {
+							"value": "@pipeline().globalParameters.passwordkey",
+							"type": "Expression"
+						}
+					}
+				},
 				"typeProperties": {
-					"scripts": []
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "select @LastVersion=LastVersion from dbo.SCDControl\nwhere tablename='Product'"
+						}
+					]
 				}
 			}
 		],
