@@ -1,0 +1,54 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Analyze start dimension",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@not(equals(pipeline().parameters.StartDate,pipeline().parameters.FinalStartDate))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Analyse End Dimension",
+				"type": "IfCondition",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@not(equals(pipeline().parameters.FinalEndDate,pipeline().parameters.EndDate))",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"FinalStartDate": {
+				"type": "string"
+			},
+			"FinalEndDate": {
+				"type": "string"
+			},
+			"StartDate": {
+				"type": "string"
+			},
+			"EndDate": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"ExecEndDate": {
+				"type": "String"
+			},
+			"ExecStartDate": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
