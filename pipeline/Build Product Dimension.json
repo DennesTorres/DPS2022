@@ -103,8 +103,88 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Set Current Version",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Current Version",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "CurrentVersion",
+					"value": {
+						"value": "@string(activity('Get Current Version').output.outputParameters.LastVersion)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set Latest Version",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Latest Version",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "LastVersion",
+					"value": {
+						"value": "@string(activity('Get Latest Version').output.outputParameters.LastVersion)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "If exists last version",
+				"description": "",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Set Current Version",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set Latest Version",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(coalesce(variables('LastVersion'),''),'')",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"LastVersion": {
+				"type": "String"
+			},
+			"SQL": {
+				"type": "String"
+			},
+			"CurrentVersion": {
+				"type": "String"
+			},
+			"VersionControlSQL": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "ProductDimension"
 		},
