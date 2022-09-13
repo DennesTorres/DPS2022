@@ -1,6 +1,32 @@
 {
 	"name": "Build Date Dimension",
 	"properties": {
+		"variables": {
+			"startDate": {
+				"type": "String"
+			},
+			"endDate": {
+				"type": "String"
+			},
+			"RealStartDate": {
+				"type": "String"
+			},
+			"RealEndDate": {
+				"type": "String"
+			},
+			"FinalStartDate": {
+				"type": "String"
+			},
+			"FinalEndDate": {
+				"type": "String"
+			},
+			"ExecEndDate": {
+				"type": "String"
+			},
+			"ExecStartDate": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "DateDimension"
 		},
