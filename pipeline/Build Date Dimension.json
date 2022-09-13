@@ -1,6 +1,81 @@
 {
 	"name": "Build Date Dimension",
 	"properties": {
+		"activities": [
+			{
+				"name": "Query Date Dim",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"scripts": []
+				}
+			},
+			{
+				"name": "Query Fact Date",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "sqlSource",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"servername": {
+							"value": "@pipeline().globalParameters.servername",
+							"type": "Expression"
+						},
+						"databasename": {
+							"value": "@pipeline().globalParameters.databasename",
+							"type": "Expression"
+						},
+						"username": {
+							"value": "@pipeline().globalParameters.username",
+							"type": "Expression"
+						},
+						"secretname": {
+							"value": "@pipeline().globalParameters.passwordkey",
+							"type": "Expression"
+						}
+					}
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"parameters": [
+								{
+									"name": "ProdStartDate",
+									"type": "Datetime",
+									"value": null,
+									"direction": "Output"
+								},
+								{
+									"name": "ProdEndDate",
+									"type": "Datetime",
+									"value": null,
+									"direction": "Output"
+								}
+							],
+							"type": "Query",
+							"text": "select @ProdStartDate=min([TransactionDate]),@ProdEndDate=max([TransactionDate])\nfrom [dbo].[bigTransactionHistory]"
+						}
+					]
+				}
+			}
+		],
 		"variables": {
 			"startDate": {
 				"type": "String"
