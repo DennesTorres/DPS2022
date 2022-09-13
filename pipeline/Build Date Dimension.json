@@ -115,6 +115,248 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "Set Start Date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Query Date Dim",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "startDate",
+					"value": {
+						"value": "@activity('Query Date Dim').output.outputParameters.StartDate",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set End Date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Query Date Dim",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "endDate",
+					"value": {
+						"value": "@activity('Query Date Dim').output.outputParameters.EndDate",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set Real Start Date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Query Fact Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "RealStartDate",
+					"value": {
+						"value": "@adddays(activity('Query Fact Date').output.outputParameters.ProdStartDate,-1000)\n",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set Real End Date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Query Fact Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "RealEndDate",
+					"value": {
+						"value": "@adddays(activity('Query Fact Date').output.outputParameters.ProdEndDate,1000)\n\n",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set Final Start Date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set Start Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set Real Start Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FinalStartDate",
+					"value": {
+						"value": "@if(equals(variables('startDate'),''),variables('RealStartDate'),if(less(variables('RealStartDate'),variables('startDate')) ,variables('RealStartDate'),variables('startDate') ))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set Final End Date",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set End Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set Real End Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FinalEndDate",
+					"value": {
+						"value": "@if(equals(variables('endDate'),''),variables('RealEndDate'),if(greater(variables('RealEndDate'),variables('endDate')) ,variables('RealEndDate'),variables('endDate') ))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Is Starting",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Set Final Start Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set Final End Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"ifFalseActivities": [
+						{
+							"name": "Complete Date Dimension",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "Complete Date Dimension",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"FinalStartDate": {
+										"value": "@variables('FinalStartDate')",
+										"type": "Expression"
+									},
+									"FinalEndDate": {
+										"value": "@variables('FinalEndDate')",
+										"type": "Expression"
+									},
+									"StartDate": {
+										"value": "@variables('startDate')",
+										"type": "Expression"
+									},
+									"EndDate": {
+										"value": "@variables('endDate')",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Build Entire Date Dimension",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[FillDateDim]",
+								"storedProcedureParameters": {
+									"EndDate": {
+										"value": {
+											"value": "@variables('FinalEndDate')",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									},
+									"StartDate": {
+										"value": {
+											"value": "@variables('FinalStartDate')",
+											"type": "Expression"
+										},
+										"type": "DateTime"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "sqlSource",
+								"type": "LinkedServiceReference",
+								"parameters": {
+									"servername": {
+										"value": "@pipeline().globalParameters.servername",
+										"type": "Expression"
+									},
+									"databasename": {
+										"value": "@pipeline().globalParameters.dwdatabase",
+										"type": "Expression"
+									},
+									"username": {
+										"value": "@pipeline().globalParameters.username",
+										"type": "Expression"
+									},
+									"secretname": {
+										"value": "@pipeline().globalParameters.passwordkey",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					]
+				}
 			}
 		],
 		"variables": {
@@ -134,12 +376,6 @@
 				"type": "String"
 			},
 			"FinalEndDate": {
-				"type": "String"
-			},
-			"ExecEndDate": {
-				"type": "String"
-			},
-			"ExecStartDate": {
 				"type": "String"
 			}
 		},
