@@ -60,7 +60,7 @@
 				"     insertable:false,",
 				"     updateable:true,",
 				"     upsertable:false,",
-				"     keys:['ProductId'],",
+				"     keys:['ProductID'],",
 				"     skipKeyWrites:true,",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
